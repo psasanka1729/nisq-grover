@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding: utf-8
 
 # In[32]:
@@ -65,7 +64,7 @@ U_s = (2/(2**N))*A - np.identity(2**N, dtype = complex)
 G = np.matmul(U_w, U_s)
 
 
-print('The Grover operator for the target state |w > = | '+Target_state + ' > is \n\n',G.real)
+#print('The Grover operator for the target state |w > = | '+Target_state + ' > is \n\n',G.real)
 
 
 # ## Setting up the circuit
