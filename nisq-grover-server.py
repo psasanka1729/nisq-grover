@@ -1,3 +1,4 @@
+#!/usr/bin/env grover
 # coding: utf-8
 
 # In[32]:
@@ -8,11 +9,11 @@ from qiskit import Aer
 import qiskit.quantum_info as qi
 import numpy as np
 from math import pi
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import re
-import csv
-import time
-start = time.time()
+#import csv
+#import time
+#start = time.time()
 
 
 # ### Target state $|w>$
