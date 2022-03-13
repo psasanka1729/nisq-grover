@@ -21,7 +21,7 @@ import re
 # In[33]:
 
 
-Target_state = '000'
+Target_state = '0000'
 
 
 # ## Setting up the The Grover operator
@@ -555,7 +555,7 @@ def Phi_F(operator):
 
 
 f = open('plot_data.txt', 'w')
-Num = 10
+Num = 500
 for i in range(1,Num):
     eps = i/(Num)
     f = open('plot_data.txt', 'a')
