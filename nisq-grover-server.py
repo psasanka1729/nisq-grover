@@ -555,7 +555,7 @@ def Phi_F(operator):
 
 
 f = open('plot_data.txt', 'w')
-Num = 350
+Num = 300
 for i in range(1,Num):
     eps = i/(Num)
     f = open('plot_data.txt', 'a')
