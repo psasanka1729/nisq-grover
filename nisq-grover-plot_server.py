@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[32]:
-
 import sys
 from qiskit import*
 from qiskit import Aer
