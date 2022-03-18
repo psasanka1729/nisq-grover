@@ -555,11 +555,16 @@ def Phi_F(operator):
 
 
 f = open('plot_data.txt', 'w')
-Num = 300
+Num = 100
+
 for i in range(1,Num):
     eps = i/(Num)
+    
     f = open('plot_data.txt', 'a')
+    
+    X = str(eps)
+    Y = Phi_F(Grover_reconstructed(eps))
+            
     for j in range(2**N):
-        f.write(str(eps)+','+str(Phi_F(Grover_reconstructed(eps))[j].real)+'\n')
-    f.close()    
+        f.write(X +','+ str(Y[j].real)+'\n')     
 
