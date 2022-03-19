@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-#import sys
+# In[32]:
+
+import sys
 from qiskit import*
 from qiskit import Aer
 import qiskit.quantum_info as qi
@@ -12,10 +14,12 @@ import time
 #start = time.time()
 
 
+# ### Target state $|w>$
+
 # In[33]:
 
-N_eps = 200    #int(sys.argv[1])
-Target_state =  0000   #sys.argv[2]
+N_eps = 300      #int(sys.argv[1])
+Target_state = str(0000)      #sys.argv[2]
 
 
 
