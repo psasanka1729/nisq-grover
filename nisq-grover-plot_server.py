@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import sys
+#import sys
 from qiskit import*
 from qiskit import Aer
 import qiskit.quantum_info as qi
@@ -9,15 +9,13 @@ import numpy as np
 import re
 #import csv
 import time
-start = time.time()
+#start = time.time()
 
-
-# ### Target state $|w>$
 
 # In[33]:
 
-N_eps = int(sys.argv[1])
-Target_state = sys.argv[2]
+N_eps = 200    #int(sys.argv[1])
+Target_state =  0000   #sys.argv[2]
 
 
 
@@ -332,7 +330,7 @@ for i in range(1,N_eps):
         f.write(X +','+ str(Y[j].real)+'\n')     
 
 #print('Done')
-end = time.time()
+#end = time.time()
 #print('Time taken', (end-start)/60,'minutes')
 
 
