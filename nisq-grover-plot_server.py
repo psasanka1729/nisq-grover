@@ -18,7 +18,7 @@ import time
 
 # In[33]:
 
-N_eps = 10      #int(sys.argv[1])
+N_eps = 300      #int(sys.argv[1])
 Target_state = '0000'      #sys.argv[2]
 
 
