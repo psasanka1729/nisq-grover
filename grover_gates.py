@@ -20,7 +20,7 @@ import re
 
 # In[33]:
 
-Target_state = '000000'
+Target_state = '00000000'
 
 
 # ## Setting up the The Grover operator
