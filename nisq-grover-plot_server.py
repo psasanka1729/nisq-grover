@@ -18,7 +18,7 @@ import time
 
 # In[33]:
 
-N_eps = 300      #int(sys.argv[1])
+N_eps = 200      #int(sys.argv[1])
 Target_state = '0000'      #sys.argv[2]
 
 
@@ -325,7 +325,7 @@ for i in range(1,N_eps):
 
     eps = i/(N_eps)
     
-    f = open('plot_data.txt', 'a')
+    f = open('plot_data'+Target_state+'.txt', 'a')
     
     X = str(eps)
     Y = Phi_F(Grover_reconstructed(eps))
