@@ -18,8 +18,8 @@ start = time.time()
 
 # In[33]:
 
-N_eps = int(sys.argv[1])
-Target_state = sys.argv[2]
+N_eps = 100  #int(sys.argv[1])
+Target_state = '000000' #sys.argv[2]
 
 
 
@@ -56,7 +56,7 @@ G = np.matmul(U_w, U_s)
 # The following list has all the gates in the format [name of the gate, angle, qubit].
 l = []
 
-file1 = open('gates_list_'+Target_state+'.txt', 'r')
+file1 = open('gates_list_'+Target_state+'.txt', 'r') # gates_list_000000.txt
 Lines = file1.readlines()
  
 
