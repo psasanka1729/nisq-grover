@@ -839,7 +839,7 @@ def Arr2List(Arr):
 
 
 f = open('plot_data.txt', 'w')
-Num = 10
+Num = 500
 
 for i in range(1,Num):
     eps = i/(4*Num)
