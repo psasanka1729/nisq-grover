@@ -9,7 +9,7 @@ from qiskit import Aer
 import qiskit.quantum_info as qi
 import numpy as np
 from math import pi
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import re
 import csv
 import time
