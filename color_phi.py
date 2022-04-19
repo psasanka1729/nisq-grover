@@ -241,21 +241,22 @@ def Grover_reconstructed(epsilon):
     
     j = 0 # Index for the random noise list.
     
-    for i in range(len(l)): # l is the list with all the gates.
+    for i in range(len(gates_list)): # l is the list with all the gates.
     
-        if l[i][0][0] == 'rz':
+        if gates_list[i][0] == 'rz':
             
-            Or = np.matmul(Or, Rz(float(l[i][1][0])  + epsilon * Rz_Noise[j], int(l[i][2][0])))
+            Noise = np.random.rand(1)[0]
+            Or = np.matmul(Or, Rz(float(gates_list[i][1])  + epsilon * Rz_Noise[j], int(gates_list[i][2])))
             
             j = j + 1
         
-        elif l[i][0][0] == 'h':
+        elif gates_list[i][0] == 'h':
         
-            Or = np.matmul(Or, Hadamard(int(l[i][2][0])))
+            Or = np.matmul(Or, Hadamard(int(gates_list[i][2])))
         
         else:
         
-            Or = np.matmul(Or, CNOT(int(l[i][2][0][0]), int(l[i][2][0][1])))
+            Or = np.matmul(Or, CNOT(int(gates_list[i][1]), int(gates_list[i][2])))
      
     ## In the following we will fix the phase of the reconstructed Oracle. First we will make all the elements
     # 1 or -1.
@@ -272,6 +273,7 @@ def Grover_reconstructed(epsilon):
     Gr = np.matmul(Or, U_s) ## The Grover operator G = U_w * U_s.
     
     return Gr
+
 
 
 # ### Comparison of the Grover operator $G$ before and after and the transpile
