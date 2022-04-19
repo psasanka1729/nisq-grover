@@ -1,27 +1,32 @@
+'''
+This code creates txt file of phi_f vs epsilon to plot. txt file of list of gates
+is required.
+'''
+
+
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[121]:
+# In[32]:
 
-
-from qiskit import *
+import sys
+from qiskit import*
 from qiskit import Aer
 import qiskit.quantum_info as qi
 import numpy as np
-from math import pi
-#import matplotlib.pyplot as plt
 import re
-import csv
+#import csv
 import time
 start = time.time()
 
 
 # ### Target state $|w>$
 
-# In[122]:
+# In[33]:
 
+#int(sys.argv[1])
+Target_state = '000000' #sys.argv[2]
 
-Target_state = '0000'
 
 
 # ## Setting up the The Grover operator
@@ -30,199 +35,60 @@ Target_state = '0000'
 # $$U_w = 2|w><w| - I$$ 
 # $U_w$ is a matrix with the position of the target state 1 and all its diagnoal elements are -1 and rest all zero.
 
-# In[123]:
+# In[34]:
 
 
 # First we note the length of N.
 N = len(Target_state)
 
-# Then an identity matrix is created with the size 2**N with signs reversed.
-U_w = - np.identity(2 ** N, dtype=complex)
+
+## The operator U_s.
+A = np.ones((2**N, 2**N))
+U_s = (2/(2**N))*A - np.identity(2**N, dtype = complex)
 
 
-# Then the sign of the element corresponding to the target state is flipped. To do that we first convert the
-# target state from binary to decimal number. 
+## The operator U_w. This is neeed for the sign adjustment of Grover_reconstructed operator.
+U_w = - np.identity(2 ** N, dtype=complex) 
 Target_index = int(Target_state, 2)
-
-## The position of the target state is set as 1.
 U_w.itemset((Target_index, Target_index),1)
 
-
-# $$ U_s = 2|s><s| - I $$
-# Where $$ |s> = \frac{1}{\sqrt{2^N}} \sum_{x} |x>$$
-# $2|s><s|$ is a matrix with all its elements $\frac{2}{2^N}$. 
-
-# In[222]:
-
-
-## We will first create a matrix with all elements 1. This is |psi><psi| = A(say).
-A = np.ones((2**N, 2**N))
-
-## U_s = 2\(2**N)2|psi><psi| - I
-U_s = (2/(2**N))*A - np.identity(2**N, dtype = complex)
 
 ## G is the Grover operator.
 G = np.matmul(U_w, U_s)
 
 
-#print('The Grover operator for the target state |w > = | '+Target_state + ' > is \n\n',G.real)
-
-
-# In[ ]:
-
-
-
-
-
-# ## Setting up the circuit
-
-# In[221]:
-
-
-qc = QuantumCircuit(N)
-qc.unitary(U_w,[i for i in range(N)])
-#qc.draw('mpl')
-
-
-# ## For transpile, we will choose the basis gates as $Rz, CNOT$ and $H$
-
-# In[126]:
-
-
-trans_qc = transpile(qc, basis_gates = ['id', 'rz', 'cx','h'], optimization_level = 1)
-#trans_qc.draw('mpl')
-
-
-# ### Writing $1$ and $2$ qubit gates as human readable format.
-# The following loop puts the gates in a text file.
-
-# In[220]:
-
-
-## The transpile comnand returns transpiled gates in the following structure. For example,
-# a Rz gate acting on qubit 0 with angle 0.98 looks like the following.
-## (Instruction(name='rz', num_qubits=1, num_clbits=0, params=[0.9817477042468101]),
-#[Qubit(QuantumRegister(3, 'q'), 0)], [])
-
-
-# a Hadamard gate acting on qubit 0 looks like the following.
-## (Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), [Qubit(QuantumRegister(3, 'q'), 0)], [])
-
-# a CNOT gate looks like the following.
-## (Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]),
-#[Qubit(QuantumRegister(3, 'q'), 1), Qubit(QuantumRegister(3, 'q'), 0)], [])
-
-
-f = trans_qc
-def List_Gates(Gate_Number):
-    
-    
-    ## The list will hold string along with the angles.
-    l = []
-    
-    Name_of_Gate = []
-    
-    ## The list will hold the qubit that the gate is acting on.
-    Qubit = []    
-    
-    ## The list will hold the numerical value (float) of the angle for Rz.
-    Angle = []
-
-    ## The following two lines will be used to separate the numerical value of the angle from 
-    # a mixture of string and digits.
-    numeric_const_pattern = '[-+]? (?: (?: \d* \. \d+ ) | (?: \d+ \.? ) )(?: [Ee] [+-]? \d+ )?'
-    
-    rx = re.compile(numeric_const_pattern, re.VERBOSE)
-    
-    if str(trans_qc[Gate_Number][0]).split(',')[0][-3:-1] == 'rz':
-        
-        Name_of_Gate.append('rz')        
-        ## For the gate rz, there is one angle. The following lines puts the string which contain
-        # the angle along with other alphabets in a list l.
-        l.append(str(list(f)[Gate_Number]).split(',')[3])
-
-        
-        ## The following loop extracts the angle from the string of alphabet and digit.
-        for i in l:
-            
-            if rx.findall(i) == []:
-                
-                ## the angle zero is written as 0.0 .
-                Angle.append(0.0)
-                
-            else:
-                
-                Angle.append(float(rx.findall(i)[0]))
-                
-        ## the qubit on which rz acts is listed.        
-        Qubit.append(re.sub("\D", "", str(trans_qc[Gate_Number][1]).split(',')[2]))  
-        
-    # For hadamard gates the qubit it is applied to is listed.    
-    elif str(trans_qc[Gate_Number][0]).split(',')[0][-2:-1] == 'h':
-        
-        Name_of_Gate.append('h')
-        Qubit.append(re.sub("\D", "", str(trans_qc[Gate_Number][1]).split(',')[2]))
-    
-    
-        ## if the gate is cx then the Angle list is empty.        
-    else:
-        
-        Name_of_Gate.append('cx')     
-        ## the control and the target bit is listed.
-        Control_bit = re.sub("\D", '', str(trans_qc[Gate_Number][1][0]).split(',')[2])
-        
-        Target_bit = re.sub("\D", '', str(trans_qc[Gate_Number][1][1]).split(',')[2])   
-        
-        Qubit.append([Control_bit, Target_bit])
-    
-    
-    return Name_of_Gate,Angle, Qubit
-
 
 
 # The following list has all the gates in the format [name of the gate, angle, qubit].
 l = []
-for i in range(len(f)):
-    l.append(List_Gates(i))      
 
-## To view the gates, open the following text file.    
-file = open('gates_list'+Target_state+'.txt', 'w')
+file1 = open('gates_list_'+Target_state+'.txt', 'r') # gates_list_000000.txt
+Lines = file1.readlines()
+ 
 
+for line in Lines:
+    l.append(line.strip())
 
-# The following variables will count number of each gates.
-rz_count = 0
-h_count = 0
-cx_count = 0
+gates_list = []
 
-
-## The following loop writes the gates into the file.
+Rz_Number = 0
 for i in range(len(l)):
     
-    if l[i][0][0] == 'rz':
-        
-        file.write('rz'+','+str(l[i][1][0])+','+str(l[i][2][0])+','+'\n')
-        
-        rz_count += 1
-        
-    elif l[i][0][0] == 'h':
-        
-        file.write('h'+','+'0.0'+','+str(l[i][2][0])+','+'\n')
-        
-        h_count += 1
-        
-    else:
-        
-        file.write('cx'+','+l[i][2][0][0]+','+l[i][2][0][1]+','+'\n')
-        
-        cx_count += 1
+    l_temp = []
+    gate_name = l[i].split(',')[0]
+    if gate_name == 'rz':
+        Rz_Number +=1 
+    gate_angle = l[i].split(',')[1]
+    gate_qubit = l[i].split(',')[2]
+    
+    l_temp.append(gate_name)
+    l_temp.append(gate_angle)
+    l_temp.append(gate_qubit)
 
-#print(
-    #'Total gates used = ',len(l),'\n' \
-     # 'Number of Rz gates =', rz_count,'\n'\
-     # 'Number of Hadamard gates =', h_count,'\n'\
-     # 'Number of CNOT gates =', cx_count
-       # )   
-Rz_Number = rz_count
+    gates_list.append(l_temp)
+    
+
+
 
 
 # ## The basis gates
@@ -839,10 +705,10 @@ def Arr2List(Arr):
 
 
 f = open('plot_data.txt', 'w')
-Num = 500
+Num = 1000
 
 for i in range(1,Num):
-    eps = i/(4*Num)
+    eps = i/(Num)
     
     f = open('plot_data.txt', 'a')
     Op = Grover_reconstructed(eps)
