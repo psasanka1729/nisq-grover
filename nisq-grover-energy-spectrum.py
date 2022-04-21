@@ -710,7 +710,7 @@ f = open('plot_data.txt', 'w')
 Num = 1000
 
 for i in range(1,Num):
-    eps = i/(Num)
+    eps = i/(2*Num)
     
     f = open('plot_data.txt', 'a')
     Op = Grover_reconstructed(eps)
