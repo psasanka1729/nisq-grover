@@ -3,6 +3,7 @@
 
 # In[32]:
 
+# This program plots phi vs epslion given the decomposition for a state.
 import sys
 from qiskit import*
 from qiskit import Aer
