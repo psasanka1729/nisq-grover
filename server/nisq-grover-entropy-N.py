@@ -14,9 +14,9 @@ import re
 #start = time.time()
 
 # Value of epsilon.
-eps = 0.05
+eps = 0.005
    #int(sys.argv[1])
-Target_state = '0000'      #sys.argv[2]
+Target_state = '00000000'      #sys.argv[2]
 
 
 
