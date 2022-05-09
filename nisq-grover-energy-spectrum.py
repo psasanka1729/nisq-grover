@@ -25,7 +25,7 @@ start = time.time()
 # In[33]:
 
 #int(sys.argv[1])
-Target_state = '000000' #sys.argv[2]
+Target_state = '00000000' #sys.argv[2]
 
 
 
@@ -707,10 +707,10 @@ def Arr2List(Arr):
 
 
 f = open('plot_data.txt', 'w')
-Num = 1000
+Num = 20
 
 for i in range(1,Num):
-    eps = i/(2*Num)
+    eps = 0.005*(i/Num)
     
     f = open('plot_data.txt', 'a')
     Op = Grover_reconstructed(eps)
