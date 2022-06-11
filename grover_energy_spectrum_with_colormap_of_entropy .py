@@ -638,5 +638,5 @@ for i in range(1,Num):
             
     # file -> epsilon phi_f entropy    
     for j in range(2**N):
-        f.write(X +'\t'+ str(Y[j].real)+ 't' + str(Average_Entropy(Array2List(V[:,j:j+1]))) +'\n')   
+        f.write(X +'\t'+ str(Y[j].real)+ '\t' + str(Average_Entropy(Array2List(V[:,j:j+1]))) +'\n')   
 
